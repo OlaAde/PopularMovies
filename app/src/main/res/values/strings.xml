@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Movie Lister</string>
+    <string name="action_sort_by_popularity">Sort by Popularity</string>
+    <string name="action_sort_by_rating">Sort By Highest Rated</string>
+</resources>
