@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private String sort_by_popularity = "popularity.desc";
     private String sort_by_highest_rated = "vote_average.desc";
     private String mSortPref = sort_by_popularity;
+
+    private String keyPref = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
+        keyPref = getString((R.string.tmdb_api_key));
         updateLayout();
     }
 
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected JSONArray doInBackground(String... strings) {
             if (strings.length == 0)
                 return null;
-          URL url =  NetworkUtils.buildUrl(strings[0]);
+          URL url =  NetworkUtils.buildUrl(strings[0], keyPref);
             String reply = null;
             try {
               reply =   NetworkUtils.getResponseFromHttpUrl(url);

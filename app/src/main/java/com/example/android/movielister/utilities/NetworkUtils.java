@@ -3,6 +3,8 @@ package com.example.android.movielister.utilities;
 import android.net.Uri;
 import android.widget.TextView;
 
+import com.example.android.movielister.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,14 +24,11 @@ public final class NetworkUtils {
     private static TextView mTextView;
     private static final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
 
-    private static final String key = "033e062664316f55fb3d7e670982c841";
-
     final static String KEY_PARAM = "api_key";
     final static String SORT_PARAM = "sort_by";
-
-    public static URL buildUrl(String sortPref){
+    public static URL buildUrl(String sortPref, String keyPref){
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendQueryParameter(KEY_PARAM,key)
+                .appendQueryParameter(KEY_PARAM, keyPref)
                 .appendQueryParameter(SORT_PARAM,sortPref)
                 .build();
         URL url = null;
