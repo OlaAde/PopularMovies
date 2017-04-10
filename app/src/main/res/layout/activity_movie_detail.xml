@@ -1,38 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.movielister.MovieDetail">
-
-    <ImageView
+    tools:context="com.example.android.movielister.MovieDetailActivity">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center"
-        android:id="@+id/detail_iv"
-        android:layout_alignParentTop="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Activity"
-        android:id="@+id/detail_tv"
-        android:layout_toEndOf="@id/detail_iv"
-        android:layout_toRightOf="@id/detail_iv"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/description_tv"
-        android:layout_alignBottom="@id/detail_tv"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/users_rating_tv"
-        android:layout_alignBottom="@id/description_tv"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/release_date_tv"
-        android:layout_alignBottom="@id/users_rating_tv"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/grid_item_movie_height">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:id="@+id/detail_iv"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:padding="5dp"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/detail_tv"
+                android:textColor="@android:color/white"
+                android:background="#80000000" />
 
-</RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/description_tv"
+                android:textSize="@dimen/text_size"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/release_date"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/release_date_tv"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vote_average"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"  />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/users_rating_tv"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

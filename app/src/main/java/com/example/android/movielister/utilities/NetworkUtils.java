@@ -1,6 +1,7 @@
 package com.example.android.movielister.utilities;
 
 import android.net.Uri;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.android.movielister.R;
@@ -21,15 +22,17 @@ import java.util.Scanner;
  */
 
 public final class NetworkUtils {
-    private static TextView mTextView;
     private static final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
 
     final static String KEY_PARAM = "api_key";
     final static String SORT_PARAM = "sort_by";
-    public static URL buildUrl(String sortPref, String keyPref){
+    final static String PAGE_PARAM = "page";
+
+    public static URL buildUrl(String sortPref, String pagePref, String keyPref){
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
                 .appendQueryParameter(KEY_PARAM, keyPref)
                 .appendQueryParameter(SORT_PARAM,sortPref)
+                .appendQueryParameter(PAGE_PARAM,pagePref)
                 .build();
         URL url = null;
         try {
@@ -70,4 +73,19 @@ public final class NetworkUtils {
         JSONArray movieArray = jsonObject.getJSONArray("results");
         return movieArray;
     }
+
+    public static int getTotalNumberOfPages(String movieJsonStr){
+        JSONObject jsonObject = null;
+        int totalNumPages = 0;
+        try {
+            jsonObject = new JSONObject(movieJsonStr);
+            totalNumPages = (int)jsonObject.getDouble("total_pages");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return totalNumPages;
+    }
+
+
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/grid_item_movie_spacing"
     tools:context="com.example.android.movielister.MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -16,17 +17,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/error_message"
         android:textSize="20sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_centerInParent="true"/>
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
         android:layout_height="42dp"
         android:layout_width="42dp"
         android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/left_arrow"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_keyboard_arrow_left_black_48dp"
+            android:hapticFeedbackEnabled="true"
+            android:layout_weight="1"
+            android:onClick="leftClick"
+            android:backgroundTint="#BDBDBD"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:text="1"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:id="@+id/page_num_tv"
+            android:background="#9E9E9E"/>
+
+        <ImageButton
+            android:id="@+id/right_arrow"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_keyboard_arrow_right_black_48dp"
+            android:hapticFeedbackEnabled="true"
+            android:backgroundTint="#BDBDBD"
+            android:layout_weight="1"
+            android:onClick="rightClick"/>
+
+    </LinearLayout>
 
 
 
-</FrameLayout>
+</RelativeLayout>

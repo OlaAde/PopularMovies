@@ -1,19 +1,21 @@
 package com.example.android.movielister;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.movielister.utilities.NetworkUtils;
 
@@ -27,68 +29,81 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnclickHandler {
 
     private RecyclerView mRecyclerView;
-    private TextView mTextViewTitle;
-    private ImageView mImageViewitem;
     private MovieAdapter mMovieAdapter;
+    private ImageButton mRightButton;
+    private ImageButton mLeftButton;
+    private TextView mPageTextview;
 
 
     private String sort_by_popularity = "popularity.desc";
     private String sort_by_highest_rated = "vote_average.desc";
     private String mSortPref = null;
-
+    int mCurrentPageNo = 1, mTotalPageNo = 0;
     private TextView mErrorMessageDisplay;
 
     private ProgressBar mLoadingIndicator;
     private String keyPref = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSortPref = sort_by_popularity;
-       mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
-        mTextViewTitle = (TextView) findViewById(R.id.tv_item);
-        mImageViewitem = (ImageView) findViewById(R.id.iv_item);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
+        mRightButton = (ImageButton) findViewById(R.id.right_arrow);
+        mPageTextview = (TextView) findViewById(R.id.page_num_tv);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-/* This TextView is used to display errors and will be hidden if there are no errors */
+        /* This TextView is used to display errors and will be hidden if there are no errors */
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3 ,GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
         keyPref = getString((R.string.tmdb_api_key));
+        setmLeftButton();
+        setmRightButton();
         updateLayout();
     }
 
-    public void updateLayout(){
+    public void updateLayout() {
+        if(mCurrentPageNo == 1)
+            mLeftButton.setVisibility(View.INVISIBLE);
+        else
+            mLeftButton.setVisibility(View.VISIBLE);
+
+
+
+        if(isNetworkAvailable() == true){
         showWeatherDataView();
         mMovieAdapter.setMovieData(null);
         new LoadMoviesTask().execute(mSortPref);
+        mPageTextview.setText("Page " + mCurrentPageNo + " of " + mTotalPageNo );
+        }
+        else
+        showErrorMessage();
+
+        if (mCurrentPageNo == mTotalPageNo)
+            mRightButton.setVisibility(View.INVISIBLE);
     }
 
     /**
      * This method will make the View for the weather data visible and
      * hide the error message.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
      */
     private void showWeatherDataView() {
-        /* First, make sure the error is invisible */
+        /* First, to make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        /* Then, make sure the weather data is visible */
+        /* Then, to make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     /**
      * This method will make the error message visible and hide the weather
      * View.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
      */
     private void showErrorMessage() {
         /* First, hide the currently visible data */
@@ -97,9 +112,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
+
+
     @Override
     public void voidMethod(JSONObject param) {
-        Intent intent = new Intent(MainActivity.this, MovieDetail.class);
+        Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
         String movieTitle = null;
         String description = null;
         String usersRating = null;
@@ -123,8 +140,31 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(intent);
     }
 
+    public void setmLeftButton(){
+        mLeftButton = (ImageButton) findViewById(R.id.left_arrow);
+        mLeftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentPageNo = mCurrentPageNo - 1;
+                mPageTextview.setText(Integer.toString(mCurrentPageNo));
+                updateLayout();
+            }
+        });
+    }
 
-    public class LoadMoviesTask extends AsyncTask<String,Void , JSONArray>{
+    public void setmRightButton(){
+        mRightButton = (ImageButton) findViewById(R.id.right_arrow);
+        mRightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentPageNo = mCurrentPageNo + 1;
+                mPageTextview.setText(Integer.toString(mCurrentPageNo));
+                updateLayout();
+            }
+        });
+    }
+
+    public class LoadMoviesTask extends AsyncTask<String, Void, JSONArray> {
         @Override
         protected void onPreExecute() {
             mLoadingIndicator.setVisibility(View.VISIBLE);
@@ -135,17 +175,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected JSONArray doInBackground(String... strings) {
             if (strings.length == 0)
                 return null;
-          URL url =  NetworkUtils.buildUrl(strings[0], keyPref);
+            URL url = NetworkUtils.buildUrl(strings[0], Integer.toString(mCurrentPageNo), keyPref);
             String reply = null;
             try {
-              reply =   NetworkUtils.getResponseFromHttpUrl(url);
+                reply = NetworkUtils.getResponseFromHttpUrl(url);
+                mTotalPageNo = NetworkUtils.getTotalNumberOfPages(reply);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+
             JSONArray returnArray = null;
             try {
-               returnArray =   NetworkUtils.resultArray(reply) ;
+                returnArray = NetworkUtils.resultArray(reply);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -158,8 +201,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (jArray != null) {
                 showWeatherDataView();
                 mMovieAdapter.setMovieData(jArray);
-            }
-            else
+            } else
                 showErrorMessage();
         }
     }
@@ -172,8 +214,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (mSortPref.contentEquals(sort_by_popularity)) {
             if (!action_sort_by_popularity.isChecked())
                 action_sort_by_popularity.setChecked(true);
-        }
-        else {
+        } else {
             if (!action_sort_by_rating.isChecked())
                 action_sort_by_rating.setChecked(true);
         }
@@ -203,6 +244,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        boolean status = false;
+        try {
+            ConnectivityManager cm =
+                    (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            status = activeNetwork != null &&
+                    activeNetwork.isConnectedOrConnecting();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return status;
+
     }
 
 }

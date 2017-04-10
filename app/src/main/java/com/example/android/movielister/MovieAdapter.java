@@ -84,7 +84,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             e.printStackTrace();
         }
         Uri uri = Uri.parse(basePicasso + moviePosterStringUrl);
-        Log.v("ooknibxi", uri.toString());
         holder.mMovieTextView.setText(movieTitle);
         Picasso.with(context).load(uri).into(holder.mMovieImageView);
 

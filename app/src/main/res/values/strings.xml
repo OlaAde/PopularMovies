@@ -6,4 +6,9 @@
     <string name="error_message">
         An error has occurred somewhere in the chain !!!
     </string>
+    <string name="release_date">Release Date</string>
+    <string name="vote_average">Vote Average</string>
+    <string name="list_order">Order</string>
+    <string name="detail_activity_title">Movie Description</string>
+
 </resources>

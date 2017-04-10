@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     app:showAsAction="ifRoom"
-    android:title="Order"
+    android:title="@string/list_order"
     android:id="@+id/action_order"   >
     <menu>
         <group android:checkableBehavior="single">
