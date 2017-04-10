@@ -2,4 +2,8 @@
     <string name="app_name">Movie Lister</string>
     <string name="action_sort_by_popularity">Sort by Popularity</string>
     <string name="action_sort_by_rating">Sort By Highest Rated</string>
+
+    <string name="error_message">
+        An error has occurred somewhere in the chain !!!
+    </string>
 </resources>
