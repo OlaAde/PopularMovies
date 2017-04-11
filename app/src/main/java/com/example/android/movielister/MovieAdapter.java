@@ -3,7 +3,6 @@ package com.example.android.movielister;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
+import java.util.Random;
+
 
 /**
  * Created by Adeogo on 4/7/2017.
@@ -28,6 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     Context context;
     private JSONArray movieArray;
     private final MovieAdapterOnclickHandler mClickHandler;
+    private Random mRandom = new Random();
 
     public interface MovieAdapterOnclickHandler{
         void voidMethod(JSONObject param);
@@ -86,6 +85,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         Uri uri = Uri.parse(basePicasso + moviePosterStringUrl);
         holder.mMovieTextView.setText(movieTitle);
         Picasso.with(context).load(uri).into(holder.mMovieImageView);
+        holder.mMovieImageView.getLayoutParams().height = getRandomIntInRange(400, 250);
 
 
     }
@@ -96,6 +96,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             return 0;
         }
         return movieArray.length();
+    }
+
+    // Custom method to get a random number between a range
+    protected int getRandomIntInRange(int max, int min){
+        return mRandom.nextInt((max-min)+min)+min;
     }
 
 

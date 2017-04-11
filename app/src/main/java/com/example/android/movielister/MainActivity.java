@@ -2,6 +2,7 @@ package com.example.android.movielister;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.AttributeSet;
+import android.util.Xml;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.example.android.movielister.utilities.NetworkUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private LinearLayout mLayout;
 
 
-    private String sort_by_popularity = "popularity.desc";
-    private String sort_by_highest_rated = "vote_average.desc";
+    private String sort_by_popularity = "popular";
+    private String sort_by_highest_rated = "top_rated";
     private String mSortPref = null;
     int mCurrentPageNo = 1, mTotalPageNo = 0;
     private TextView mErrorMessageDisplay;
@@ -46,10 +51,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mLoadingIndicator;
     private String keyPref = null;
 
+    StaggeredGridLayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         mSortPref = sort_by_popularity;
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
         mRightButton = (ImageButton) findViewById(R.id.right_arrow);
@@ -60,9 +69,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         /* This TextView is used to display errors and will be hidden if there are no errors */
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, 1));
+        }
+        else{
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, 1));
+        }
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mMovieAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
@@ -72,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         updateLayout();
     }
 
-    public void updateLayout() {
+
+       public void updateLayout() {
         if(mCurrentPageNo == 1)
             mLeftButton.setVisibility(View.INVISIBLE);
         else

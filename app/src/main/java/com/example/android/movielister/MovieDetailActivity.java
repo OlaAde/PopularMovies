@@ -2,8 +2,10 @@ package com.example.android.movielister;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +23,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        setTitle(R.string.detail_activity_title);
 
 
         mTitleTextView = (TextView) findViewById(R.id.detail_tv);
@@ -36,6 +37,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         String usersRating = intent.getStringExtra("usersRating");
         String releaseDate = intent.getStringExtra("releaseDate");
         String thumbnail = intent.getStringExtra("thumbnail");
+
+        setTitle(movieTitle);
 
         Uri uri = Uri.parse(basePicasso + thumbnail);
         Picasso.with(this).load(uri).into(mThumbnailImageView);

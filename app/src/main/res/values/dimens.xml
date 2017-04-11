@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
         <!-- Default screen margins, per the Android Design guidelines. -->
         <dimen name="activity_horizontal_margin">16dp</dimen>
         <dimen name="activity_vertical_margin">16dp</dimen>
-        <dimen name="grid_item_movie_width">160dp</dimen>
-        <dimen name="grid_item_movie_spacing">1dp</dimen>
-        <dimen name="grid_item_movie_height">170dp</dimen>
+        <dimen name="marginTop_release_date_layout">20dp</dimen>
+        <dimen name="marginTop_vote_average_layout">10dp</dimen>
+
+        <dimen name="layout_width_view">0dp</dimen>
+        <dimen name="list_item_movie_width">160dp</dimen>
+        <dimen name="list_item_movie_spacing">1dp</dimen>
+        <dimen name="list_item_layout_height">170dp</dimen>
+        <dimen name="progress_bar_layout_width">42dp</dimen>
+        <dimen name="progress_bar_layout_height">42dp</dimen>
+        <dimen name="layout_height_image_button">40dp</dimen>
+
+
         <dimen name="text_size">16sp</dimen>
+        <dimen name="text_size_error">20sp</dimen>
+        <dimen name="text_size_page">25sp</dimen>
+        <dimen name="text_size_detail_tv">5dp</dimen>
+
+        <dimen name="padding_detail_tv">5dp</dimen>
+        <dimen name="padding_error_tv">16dp</dimen>
+
+        <dimen name="card_corner_radius">4dp</dimen>
+        <dimen name="card_max_elevation">2dp</dimen>
+        <dimen name="card_elevation">1dp</dimen>
 
 </resources>

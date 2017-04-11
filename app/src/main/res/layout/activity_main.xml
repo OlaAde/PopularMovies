@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/grid_item_movie_spacing"
+    android:padding="@dimen/list_item_movie_spacing"
     tools:context="com.example.android.movielister.MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -16,16 +16,16 @@
         android:id="@+id/tv_error_message_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="20sp"
+        android:padding="@dimen/padding_error_tv"
+        android:textSize="@dimen/text_size_error"
         android:text="@string/error_message"
         android:visibility="invisible"
         android:layout_centerInParent="true"/>
 
     <ProgressBar
         android:id="@+id/pb_loading_indicator"
-        android:layout_height="42dp"
-        android:layout_width="42dp"
+        android:layout_height="@dimen/progress_bar_layout_height"
+        android:layout_width="@dimen/progress_bar_layout_width"
         android:layout_gravity="center"
         android:visibility="invisible"
         android:layout_centerInParent="true"/>
@@ -40,32 +40,32 @@
 
         <ImageButton
             android:id="@+id/left_arrow"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/layout_width_view"
+            android:layout_height="@dimen/layout_height_image_button"
             android:src="@drawable/ic_keyboard_arrow_left_black_48dp"
             android:hapticFeedbackEnabled="true"
             android:layout_weight="1"
             android:onClick="leftClick"
-            android:backgroundTint="#BDBDBD"/>
+            android:backgroundTint="@color/color_background_tint_arrows"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="25sp"
+            android:textSize="@dimen/text_size_page"
             android:text="1"
-            android:textColor="#000000"
+            android:textColor="@color/color_page_tv"
             android:layout_weight="1"
             android:id="@+id/page_num_tv"
-            android:background="#9E9E9E"/>
+            android:background="@color/color_background_page_tv"/>
 
         <ImageButton
             android:id="@+id/right_arrow"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/layout_width_view"
+            android:layout_height="@dimen/layout_height_image_button"
             android:src="@drawable/ic_keyboard_arrow_right_black_48dp"
             android:hapticFeedbackEnabled="true"
-            android:backgroundTint="#BDBDBD"
+            android:backgroundTint="@color/color_background_tint_arrows"
             android:layout_weight="1"
             android:onClick="rightClick"/>
 
