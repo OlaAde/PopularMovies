@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ImageButton mRightButton;
     private ImageButton mLeftButton;
     private TextView mPageTextview;
+    private LinearLayout mLayout;
 
 
     private String sort_by_popularity = "popularity.desc";
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_main);
         mRightButton = (ImageButton) findViewById(R.id.right_arrow);
         mPageTextview = (TextView) findViewById(R.id.page_num_tv);
+        mLayout = (LinearLayout) findViewById(R.id.linear_layout);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         /* This TextView is used to display errors and will be hidden if there are no errors */
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, to make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
+        mLayout.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        mLayout.setVisibility(View.INVISIBLE);
     }
 
 
