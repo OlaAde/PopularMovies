@@ -22,21 +22,23 @@ import java.util.Scanner;
  */
 
 public final class NetworkUtils {
-    private static final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     final static String KEY_PARAM = "api_key";
     final static String PAGE_PARAM = "page";
+    final static String SCHEME_URI = "https";
+    final static String AUTHORITY_URI= "api.themoviedb.org";
+    final static String PATH_1 = "3";
+    final static String PATH_2 = "movie";
 
     public static URL buildUrl(String sortPref, String pagePref, String keyPref){
         Uri.Builder builder = new Uri .Builder();
-                builder.scheme("https")
-                .authority("api.themoviedb.org")
-                .appendPath("3")
-                .appendPath("movie")
+                builder.scheme(SCHEME_URI)
+                .authority(AUTHORITY_URI)
+                .appendPath(PATH_1)
+                .appendPath(PATH_2)
                 .appendPath(sortPref)
                 .appendQueryParameter(KEY_PARAM, keyPref)
                 .appendQueryParameter(PAGE_PARAM,pagePref);
         Uri builtUri = builder.build();
-        Log.v("njjhj", builtUri.toString());
         URL url = null;
         try {
             url = new URL(builtUri.toString());
